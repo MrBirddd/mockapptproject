@@ -6,5 +6,5 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
 })
 let roseleft: Sprite = null
 roseleft = sprites.create(assets.image`roseleft`, SpriteKind.Player)
-roseleft.setPosition(120, 50)
+roseleft.setPosition(130, 50)
 tiles.setCurrentTilemap(tilemap`level1`)
