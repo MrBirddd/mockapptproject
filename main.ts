@@ -176,9 +176,9 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Player, function (sprite, otherS
     }
 })
 function updateScore (num: number) {
-    if ((1 as any) == (0 as any)) {
+    if (projectile.y - LINE.y >= 5) {
     	
-    } else if (false) {
+    } else if (projectile.y - LINE.y <= 10) {
     	
     } else {
     	
@@ -187,7 +187,6 @@ function updateScore (num: number) {
 let projectile: Sprite = null
 let LINE: Sprite = null
 let roseleft: Sprite = null
-tiles.setCurrentTilemap(tilemap`level7`)
 roseleft = sprites.create(img`
     ...........ccbbbbcc....................
     ........bdddddddddddddb................
@@ -269,14 +268,7 @@ LINE = sprites.create(img`
 let list2 = [sprites.castle.skellyAttackLeft1, sprites.castle.skellyAttackRight2]
 LINE.setPosition(50, 20)
 roseleft.setPosition(135, 70)
-tiles.placeOnTile(roseleft, tiles.getTileLocation(6, 15))
-tiles.placeOnTile(LINE, tiles.getTileLocation(2, 15))
 music.play(music.createSong(assets.song`mySong`), music.PlaybackMode.LoopingInBackground)
-scene.cameraFollowSprite(LINE)
-game.onUpdate(function () {
-    LINE.y += -5
-    roseleft.y = LINE.y
-})
 game.onUpdateInterval(music.beat(BeatFraction.Double), function () {
     projectile = sprites.createProjectileFromSide(list2[randint(0, 1)], 0, -50)
     projectile.setPosition(50, 120)
