@@ -165,25 +165,21 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
         ........................
         `)
 })
-sprites.onOverlap(SpriteKind.Player, SpriteKind.Player, function (sprite, otherSprite) {
-    let mySprite: Sprite = null
-    // 5>10
-    // 10<12
-    if (mySprite.y < 7) {
-    	
+function updSCORE (note: Sprite) {
+    if (Math.abs(note.y - LINE.y) <= 9) {
+        info.changeScoreBy(5)
+    } else if (Math.abs(note.y - LINE.y) >= 17) {
+        info.changeScoreBy(5)
     } else {
-    	
-    }
-})
-function updateScore (num: number) {
-    if (projectile.y - LINE.y >= 5) {
-    	
-    } else if (projectile.y - LINE.y <= 10) {
-    	
-    } else {
-    	
+        info.changeScoreBy(10)
     }
 }
+sprites.onOverlap(SpriteKind.Projectile, SpriteKind.ghost, function (sprite, otherSprite) {
+    if (controller.left.isPressed() || controller.right.isPressed()) {
+        updSCORE(sprite)
+        sprites.destroy(sprite, effects.spray, 500)
+    }
+})
 let projectile: Sprite = null
 let LINE: Sprite = null
 let roseleft: Sprite = null
@@ -266,10 +262,11 @@ LINE = sprites.create(img`
     ........................
     `, SpriteKind.ghost)
 let list2 = [sprites.castle.skellyAttackLeft1, sprites.castle.skellyAttackRight2]
-LINE.setPosition(50, 20)
+LINE.setPosition(50, 100)
 roseleft.setPosition(135, 70)
 music.play(music.createSong(assets.song`mySong`), music.PlaybackMode.LoopingInBackground)
+info.setScore(0)
 game.onUpdateInterval(music.beat(BeatFraction.Double), function () {
-    projectile = sprites.createProjectileFromSide(list2[randint(0, 1)], 0, -50)
-    projectile.setPosition(50, 120)
+    projectile = sprites.createProjectileFromSide(list2[randint(0, 1)], 0, 50)
+    projectile.setPosition(50, 0)
 })
