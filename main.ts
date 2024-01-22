@@ -168,10 +168,64 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
 function updSCORE (note: Sprite) {
     if (Math.abs(note.y - LINE.y) <= 9) {
         info.changeScoreBy(5)
+        epl.setImage(img`
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . 3 3 3 3 3 3 . . . . . 
+            . . . . . 3 . . . . . . . . . . 
+            . . . . . 3 . . . . . . . . . . 
+            . . . . . 3 . 3 . . . . . . . . 
+            . . . . . 3 3 3 . . . . . . . . 
+            . . . . . 3 . . . . . . . . . . 
+            . . . . . 3 . . . . . . . . . . 
+            . . . . . 3 3 3 3 3 . . . . . . 
+            . . . . . 3 . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            `)
     } else if (Math.abs(note.y - LINE.y) >= 17) {
         info.changeScoreBy(5)
+        epl.setImage(img`
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . 3 3 . . . . . . . . . 
+            . . . . . 3 . . . . . . . . . . 
+            . . . . . 3 . . . . . . . . . . 
+            . . . . . 3 . . . . . . . . . . 
+            . . . . . 3 . . . . . . . . . . 
+            . . . . . 3 . . . . . . . . . . 
+            . . . . . 3 . . . . . . . . . . 
+            . . . . . 3 . . . . . . . . . . 
+            . . . . . 3 . . . . 3 3 3 3 . . 
+            . . . . . 3 3 3 3 3 . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            `)
     } else {
         info.changeScoreBy(10)
+        epl.setImage(img`
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . 3 3 3 3 . . . . . . . 
+            . . . . . 3 3 . . 3 3 . . . . . 
+            . . . . . 3 3 . . . 3 3 . . . . 
+            . . . . . 3 3 . . . . 3 . . . . 
+            . . . . . 3 3 . . . . 3 . . . . 
+            . . . . . 3 3 . . . 3 . . . . . 
+            . . . . . 3 3 3 3 3 . . . . . . 
+            . . . . . 3 3 . . . . . . . . . 
+            . . . . . 3 . . . . . . . . . . 
+            . . . . . 3 . . . . . . . . . . 
+            . . . . . 3 . . . . . . . . . . 
+            . . . . . 3 . . . . . . . . . . 
+            . . . . . 3 . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            `)
     }
 }
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.ghost, function (sprite, otherSprite) {
@@ -181,6 +235,7 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.ghost, function (sprite, oth
     }
 })
 let projectile: Sprite = null
+let epl: Sprite = null
 let LINE: Sprite = null
 let roseleft: Sprite = null
 roseleft = sprites.create(img`
@@ -261,9 +316,28 @@ LINE = sprites.create(img`
     ........................
     ........................
     `, SpriteKind.ghost)
+epl = sprites.create(img`
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . 3 . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    `, SpriteKind.Player)
 let list2 = [sprites.castle.skellyAttackLeft1, sprites.castle.skellyAttackRight2]
 LINE.setPosition(50, 100)
 roseleft.setPosition(135, 70)
+epl.setPosition(136, 20)
 music.play(music.createSong(assets.song`mySong`), music.PlaybackMode.LoopingInBackground)
 info.setScore(0)
 game.onUpdateInterval(music.beat(BeatFraction.Double), function () {
