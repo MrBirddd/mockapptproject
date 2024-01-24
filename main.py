@@ -170,29 +170,23 @@ def on_right_pressed():
     """))
 controller.right.on_event(ControllerButtonEvent.PRESSED, on_right_pressed)
 
-def on_on_overlap(sprite, otherSprite):
-    mySprite: Sprite = None
-    # 5>10
-    # 10<12
-    if mySprite.y < 7:
-        pass
+def updSCORE(note: Sprite):
+    if abs(note.y - LINE.y) <= 9:
+        info.change_score_by(5)
+    elif abs(note.y - LINE.y) >= 17:
+        info.change_score_by(5)
     else:
-        pass
-sprites.on_overlap(SpriteKind.player, SpriteKind.player, on_on_overlap)
+        info.change_score_by(10)
 
-def updateScore(num: number):
-    if (1) == (0):
-        pass
-    elif False:
-        pass
-    else:
-        pass
+def on_on_overlap(sprite, otherSprite):
+    if controller.left.is_pressed() or controller.right.is_pressed():
+        updSCORE(sprite)
+        sprites.destroy(sprite, effects.spray, 500)
+sprites.on_overlap(SpriteKind.projectile, SpriteKind.ghost, on_on_overlap)
+
 projectile: Sprite = None
 LINE: Sprite = None
 roseleft: Sprite = None
-tiles.set_current_tilemap(tilemap("""
-    level7
-"""))
 roseleft = sprites.create(img("""
         ...........ccbbbbcc....................
             ........bdddddddddddddb................
@@ -275,23 +269,17 @@ LINE = sprites.create(img("""
     SpriteKind.ghost)
 list2 = [sprites.castle.skelly_attack_left1,
     sprites.castle.skelly_attack_right2]
-LINE.set_position(50, 20)
+LINE.set_position(50, 100)
 roseleft.set_position(135, 70)
-tiles.place_on_tile(roseleft, tiles.get_tile_location(6, 15))
-tiles.place_on_tile(LINE, tiles.get_tile_location(2, 15))
 music.play(music.create_song(assets.song("""
         mySong
     """)),
     music.PlaybackMode.LOOPING_IN_BACKGROUND)
-scene.camera_follow_sprite(LINE)
-
-def on_on_update():
-    LINE.y += -5
-    roseleft.y = LINE.y
-game.on_update(on_on_update)
+info.set_score(0)
 
 def on_update_interval():
     global projectile
-    projectile = sprites.create_projectile_from_side(list2[randint(0, 1)], 0, -50)
-    projectile.set_position(50, 120)
+    projectile = sprites.create_projectile_from_side(list2[randint(0, 1)], 0, 50)
+    projectile.set_position(50, 0)
 game.on_update_interval(music.beat(BeatFraction.DOUBLE), on_update_interval)
+
