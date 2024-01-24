@@ -66,7 +66,7 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     LINE.setImage(assets.image`myImage0`)
 })
 function updSCORE (note: Sprite) {
-    if (Math.abs(note.y - LINE.y) <= 6.333333333333333) {
+    if (Math.abs(note.y - LINE.y) <= 91) {
         info.changeScoreBy(5)
         epl.setImage(img`
             . . . . . . . . . . . . . . . . 
@@ -86,7 +86,7 @@ function updSCORE (note: Sprite) {
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
             `)
-    } else if (Math.abs(note.y - LINE.y) >= 9.777777777777779) {
+    } else if (Math.abs(note.y - LINE.y) >= 110) {
         info.changeScoreBy(3)
         epl.setImage(img`
             . . . . . . . . . . . . . . . . 
@@ -131,7 +131,7 @@ function updSCORE (note: Sprite) {
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.ghost, function (sprite, otherSprite) {
     if (controller.left.isPressed() || controller.right.isPressed()) {
         updSCORE(sprite)
-        sprites.destroy(sprite, effects.spray, 500)
+        sprites.destroy(sprite, effects.confetti, 500)
     }
 })
 let projectile: Sprite = null
