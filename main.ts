@@ -54,19 +54,14 @@ controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
         ...................eee.................
         .......................................
         `)
-    LINE.setImage(assets.image`myImage0`)
     pause(500)
-    LINE.setImage(assets.image`myImage0`)
 })
 controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     roseleft.setImage(assets.image`roseright`)
-    // once you match it'll revert back to the original sprite
-    LINE.setImage(assets.image`myImage0`)
     pause(500)
-    LINE.setImage(assets.image`myImage0`)
 })
 function updSCORE (note: Sprite) {
-    if (Math.abs(note.y - LINE.y) <= 91) {
+    if (note.overlapsWith(RED)) {
         info.changeScoreBy(5)
         epl.setImage(img`
             . . . . . . . . . . . . . . . . 
@@ -86,27 +81,7 @@ function updSCORE (note: Sprite) {
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
             `)
-    } else if (Math.abs(note.y - LINE.y) >= 110) {
-        info.changeScoreBy(3)
-        epl.setImage(img`
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . 3 3 . . . . . . . . . 
-            . . . . . 3 . . . . . . . . . . 
-            . . . . . 3 . . . . . . . . . . 
-            . . . . . 3 . . . . . . . . . . 
-            . . . . . 3 . . . . . . . . . . 
-            . . . . . 3 . . . . . . . . . . 
-            . . . . . 3 . . . . . . . . . . 
-            . . . . . 3 . . . . . . . . . . 
-            . . . . . 3 . . . . 3 3 3 3 . . 
-            . . . . . 3 3 3 3 3 . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            `)
-    } else {
+    } else if (note.overlapsWith(GREEN)) {
         info.changeScoreBy(10)
         epl.setImage(img`
             . . . . . . . . . . . . . . . . 
@@ -126,17 +101,38 @@ function updSCORE (note: Sprite) {
             . . . . . 3 . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
             `)
+    } else {
+        info.changeScoreBy(5)
+        epl.setImage(img`
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . 3 . . . . . . . . . . 
+            . . . . . 3 . . . . . . . . . . 
+            . . . . . 3 . . . . . . . . . . 
+            . . . . . 3 . . . . . . . . . . 
+            . . . . . 3 . . . . . . . . . . 
+            . . . . . 3 . . . . . . . . . . 
+            . . . . 3 3 . . . . . . . . . . 
+            . . . . 3 3 . . . . . . . . . . 
+            . . . . 3 3 . . . . . . . . . . 
+            . . . . 3 3 . . 3 3 3 3 3 3 . . 
+            . . . . . 3 3 3 . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            `)
     }
 }
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.ghost, function (sprite, otherSprite) {
     if (controller.left.isPressed() || controller.right.isPressed()) {
         updSCORE(sprite)
-        sprites.destroy(sprite, effects.confetti, 500)
+        sprites.destroy(sprite, effects.confetti, 100)
     }
 })
 let projectile: Sprite = null
+let GREEN: Sprite = null
+let RED: Sprite = null
 let epl: Sprite = null
-let LINE: Sprite = null
 let roseleft: Sprite = null
 scene.setBackgroundImage(img`
     bbbbbbbbbbbbbbbbbddddddddddddddddddddddddddddddddddddddddddddddddddddddbbbdbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbcccccccccccccccccceeeeeeecccecccccccceecccccccccc
@@ -312,31 +308,18 @@ roseleft = sprites.create(img`
     ...................eee.................
     .......................................
     `, SpriteKind.Player)
-LINE = sprites.create(assets.image`myImage0`, SpriteKind.ghost)
-epl = sprites.create(img`
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . 3 . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    `, SpriteKind.Player)
+epl = sprites.create(assets.image`myImage6`, SpriteKind.Player)
 let list2 = [assets.image`myImage1`, assets.image`myImage2`]
-LINE.setPosition(50, 100)
-roseleft.setPosition(135, 70)
-epl.setPosition(136, 20)
+RED = sprites.create(assets.image`myImage3`, SpriteKind.ghost)
+GREEN = sprites.create(assets.image`myImage4`, SpriteKind.ghost)
+let BLUE = sprites.create(assets.image`myImage5`, SpriteKind.ghost)
 music.play(music.createSong(assets.song`mySong`), music.PlaybackMode.LoopingInBackground)
 info.setScore(0)
+roseleft.setPosition(135, 70)
+epl.setPosition(136, 20)
+RED.y = 92
+GREEN.y = 104
+BLUE.y = 113
 game.onUpdateInterval(music.beat(BeatFraction.Double), function () {
     projectile = sprites.createProjectileFromSide(list2[randint(0, 1)], 0, 50)
     projectile.setPosition(50, 0)
