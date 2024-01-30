@@ -1,6 +1,25 @@
 namespace SpriteKind {
     export const ghost = SpriteKind.create()
     export const Button = SpriteKind.create()
+    export const NOTS = SpriteKind.create()
+}
+function spdChange (NOTE: Sprite) {
+    if (NOTE.image.equals(assets.image`myImage1`)) {
+        projectile.vy += 20
+        sprites.destroy(NOTE, effects.confetti, 100)
+        pause(500)
+        projectile.vy = 50
+    } else if (NOTE.image.equals(assets.image`myImage2`)) {
+        projectile.vy += -20
+        sprites.destroy(NOTE, effects.confetti, 100)
+        pause(500)
+        projectile.vy = 50
+    } else {
+        projectile.vy += 10
+        sprites.destroy(NOTE, effects.confetti, 100)
+        pause(500)
+        projectile.vy = 50
+    }
 }
 function LvlControl () {
     if (LEVEL == 0) {
@@ -164,8 +183,6 @@ function LvlControl () {
             `, SpriteKind.Player)
         PLAY.setPosition(80, 90)
         controller.moveSprite(CURSOR)
-        Name = textsprite.create(game.askForString("Choose your name!", 3))
-        Name.setPosition(80, 75)
     }
     if (LEVEL == 1) {
         sprites.destroy(CURSOR)
@@ -345,7 +362,7 @@ function LvlControl () {
             .......................................
             `, SpriteKind.Player)
         epl = sprites.create(assets.image`myImage6`, SpriteKind.Player)
-        list2 = [assets.image`myImage1`, assets.image`myImage2`]
+        NOTES = [assets.image`myImage1`, assets.image`myImage2`, assets.image`myImage8`]
         RED = sprites.create(assets.image`myImage3`, SpriteKind.ghost)
         GREEN = sprites.create(assets.image`myImage4`, SpriteKind.ghost)
         BLUE = sprites.create(assets.image`myImage5`, SpriteKind.ghost)
@@ -493,25 +510,24 @@ function updSCORE (note: Sprite) {
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.ghost, function (sprite, otherSprite) {
     if (controller.left.isPressed() || controller.right.isPressed()) {
         updSCORE(sprite)
-        sprites.destroy(sprite, effects.confetti, 100)
+        spdChange(sprite)
     }
 })
-let projectile: Sprite = null
 let BLUE: Sprite = null
 let GREEN: Sprite = null
 let RED: Sprite = null
-let list2: Image[] = []
+let NOTES: Image[] = []
 let epl: Sprite = null
 let roseleft: Sprite = null
-let Name: TextSprite = null
 let CURSOR: Sprite = null
 let PLAY: Sprite = null
+let projectile: Sprite = null
 let LEVEL = 0
 LEVEL = 0
 LvlControl()
 game.onUpdateInterval(music.beat(BeatFraction.Double), function () {
     if (LEVEL == 1) {
-        projectile = sprites.createProjectileFromSide(list2[randint(0, 1)], 0, 50)
+        projectile = sprites.createProjectileFromSide(NOTES[randint(0, 2)], 0, 50)
         projectile.setPosition(50, 0)
     }
 })
