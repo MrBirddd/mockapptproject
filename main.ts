@@ -14,6 +14,27 @@ function spdChange (NOTE: Sprite) {
         sprites.destroy(NOTE, effects.confetti, 100)
         pause(500)
         projectile.vy = 50
+    } else if (NOTE.image.equals(img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . 5 5 5 . . . . . . . 
+        . . . . . . 5 5 5 . . . . . . . 
+        . . . . . . 5 5 5 . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        `)) {
+        origNoteV += -30
+        sprites.destroy(NOTE, effects.confetti, 100)
+        pause(500)
     } else {
         projectile.vy += 10
         sprites.destroy(NOTE, effects.confetti, 100)
@@ -362,10 +383,33 @@ function LvlControl () {
             .......................................
             `, SpriteKind.Player)
         epl = sprites.create(assets.image`myImage6`, SpriteKind.Player)
-        NOTES = [assets.image`myImage1`, assets.image`myImage2`, assets.image`myImage8`]
+        NOTES = [
+        assets.image`myImage1`,
+        assets.image`myImage2`,
+        assets.image`myImage8`,
+        img`
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . 5 5 5 . . . . . . . 
+            . . . . . . 5 5 5 . . . . . . . 
+            . . . . . . 5 5 5 . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            `
+        ]
         RED = sprites.create(assets.image`myImage3`, SpriteKind.ghost)
         GREEN = sprites.create(assets.image`myImage4`, SpriteKind.ghost)
         BLUE = sprites.create(assets.image`myImage5`, SpriteKind.ghost)
+        origNoteV = 50
         music.play(music.createSong(assets.song`mySong`), music.PlaybackMode.LoopingInBackground)
         info.setScore(0)
         roseleft.setPosition(135, 70)
@@ -521,13 +565,19 @@ let epl: Sprite = null
 let roseleft: Sprite = null
 let CURSOR: Sprite = null
 let PLAY: Sprite = null
+let origNoteV = 0
 let projectile: Sprite = null
 let LEVEL = 0
 LEVEL = 0
 LvlControl()
 game.onUpdateInterval(music.beat(BeatFraction.Double), function () {
     if (LEVEL == 1) {
-        projectile = sprites.createProjectileFromSide(NOTES[randint(0, 2)], 0, 50)
+        projectile = sprites.createProjectileFromSide(NOTES[randint(0, 3)], 0, origNoteV)
         projectile.setPosition(50, 0)
+    }
+})
+game.onUpdateInterval(3000, function () {
+    if (game.runtime() > 3000) {
+        origNoteV += 40
     }
 })
