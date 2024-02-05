@@ -35,7 +35,7 @@ function spdChange (NOTE: Sprite) {
         origNoteV += -30
         sprites.destroy(NOTE, effects.confetti, 100)
         pause(500)
-    } else {
+    } else if (NOTE.image.equals(assets.image`myImage8`)) {
         projectile.vy += 10
         sprites.destroy(NOTE, effects.confetti, 100)
         pause(500)
@@ -208,6 +208,7 @@ function LvlControl () {
     if (LEVEL == 1) {
         sprites.destroy(CURSOR)
         sprites.destroy(PLAY)
+        info.setLife(3)
         scene.setBackgroundImage(img`
             3333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333
             3333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333
@@ -529,7 +530,7 @@ function updSCORE (note: Sprite) {
             . . . . . 8 . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
             `)
-    } else {
+    } else if (note.overlapsWith(BLUE)) {
         info.changeScoreBy(5)
         epl.setImage(img`
             . . . . . . . . . . . . . . . . 
@@ -555,6 +556,12 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.ghost, function (sprite, oth
     if (controller.left.isPressed() || controller.right.isPressed()) {
         updSCORE(sprite)
         spdChange(sprite)
+    } else {
+        while (sprite.y > BLUE.y + 4) {
+            sprites.destroy(sprite, effects.fire, 500)
+            info.changeLifeBy(-1)
+            break;
+        }
     }
 })
 let BLUE: Sprite = null
